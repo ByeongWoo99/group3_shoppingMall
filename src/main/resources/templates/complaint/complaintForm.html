@@ -52,15 +52,16 @@
                 <label for="productName" class="form-label">상품 이름</label>
 
                 <!-- 신규 작성 모드 (editMode가 false일 때) -->
-                <select name="productName" id="productNameSelect" class="form-select" th:if="${editMode == false}">
-                    <option th:each="productName : ${productNames}"
-                            th:value="${productName}"
-                            th:text="${productName}"
-                            th:selected="${productName == productName}">
+                <select name="productName" id="productNameSelect" class="form-select" th:if="${editMode == false}" onchange="updateHiddenSize()">
+                    <option th:each="product : ${products}"
+                            th:value="${product.productName}"
+                            th:data-size="${product.size}"
+                            th:text="${product.productName + '(' +product.size + ')'}"
+                            th:selected="${product.productName == product.productName}">
                     </option>
                 </select>
-
-
+                <!-- 선택된 size를 전달할 hidden input -->
+                <input type="hidden" name="size" id="hiddenSize">
 
                 <!-- 수정 모드 (editMode가 true일 때) -->
                 <input type="text" id="productName" name="productName"
@@ -181,6 +182,24 @@
         }
     });
 </script>
+
+<!-- size값 hidden으로 전달하기 위해 추가 -->
+<script>
+    function updateHiddenSize() {
+        const select = document.getElementById("productNameSelect");
+        const selectedOption = select.options[select.selectedIndex];
+        const selectedSize = selectedOption.getAttribute("data-size");
+
+        // hidden input에 값 설정
+        document.getElementById("hiddenSize").value = selectedSize;
+    }
+
+    // 페이지 로드시 초기값 세팅
+    window.onload = function () {
+        updateHiddenSize();
+    };
+</script>
+
 
 </body>
 </html>

@@ -31,4 +31,5 @@ public class ComplaintDto {
     private Long orderId;                 //order_id
     private String productName;          //product_name
     private String customerId;
+    private String size;
 }

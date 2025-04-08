@@ -35,6 +35,7 @@
             <li class="list-group-item"><strong>고객 ID:</strong> <span th:text="${complaint.customerId}"></span></li>
             <li class="list-group-item"><strong>주문 번호:</strong> <span th:text="${complaint.orderId}"></span></li>
             <li class="list-group-item"><strong>주문 상품:</strong> <span th:text="${complaint.productName}"></span></li>
+            <li class="list-group-item"><strong>주문 상품 사이즈:</strong> <span th:text="${complaint.size}"></span></li>
             <li class="list-group-item"><strong>민원 번호:</strong> <span th:text="${complaint.complaintId}"></span></li>
             <li class="list-group-item"><strong>신청 날짜:</strong> <span th:text="${#dates.format(complaint.requestDatetime, 'yyyy-MM-dd HH:mm:ss')}"></span></li>
             <li class="list-group-item"><strong>접수 날짜:</strong> <span th:text="${#dates.format(complaint.receivedDatetime, 'yyyy-MM-dd HH:mm:ss')}"></span></li>

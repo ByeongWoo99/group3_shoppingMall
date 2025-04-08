@@ -3,6 +3,7 @@ package org.example.shoppingmall.controller.complaint;
 import jakarta.servlet.http.HttpSession;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.example.shoppingmall.dto.complaint.ComplaintDto;
+import org.example.shoppingmall.dto.order.OrderDetailDto;
 import org.example.shoppingmall.dto.product.ProductCategoryDto;
 import org.example.shoppingmall.service.complaint.ComplaintService;
 import org.example.shoppingmall.service.product.ProductCategoryService;
@@ -50,11 +51,11 @@ public class ComplaintController {
     @GetMapping("/complaint/{orderId}")
     public String complaintForm(@PathVariable("orderId") Long orderId, Model model) {
         //한 주문에서 여러 개 상품
-        List<String> productName = complaintService.findProductNameByOrderId(orderId);
+        List<OrderDetailDto> product = complaintService.findProductNameByOrderId(orderId);
 
 
         model.addAttribute("orderId", orderId);
-        model.addAttribute("productNames", productName);
+        model.addAttribute("products", product);
         model.addAttribute("editMode", false);
         return "complaint/complaintForm";
     }
@@ -67,10 +68,11 @@ public class ComplaintController {
                                     @RequestParam String pickupAddress,
                                     @RequestParam Long orderId,
                                     @RequestParam String productName,
+                                    @RequestParam String size,
                                     RedirectAttributes redirectAttributes) {
 
-        // 기존 민원이 있는지 확인, RedirectAttributes 는 페이지가 다시 로드되면 값 사라짐
-        if (complaintService.isComplaintAlreadyExists(orderId, productName)) {
+        // 기존 민원이 있는지 확인, RedirectAttributes 는 페이지가 다시 로드되면 값 사라짐, size별로 구분하기 위해 size 추가
+        if (complaintService.isComplaintAlreadyExists(orderId, productName, size)) {
             redirectAttributes.addFlashAttribute("errorMessage", "이미 신청한 민원입니다.");
             return "redirect:/complaint/list"; // list 페이지로 리다이렉트
         }
@@ -78,7 +80,7 @@ public class ComplaintController {
 
         // ComplaintService 에서 complaint 저장 처리, 신청 시 에러 발생하면 메세지 출력
         try {
-            complaintService.saveComplaint(complaintType, complaintTitle, complaintText, pickupAddress, orderId, productName);
+            complaintService.saveComplaint(complaintType, complaintTitle, complaintText, pickupAddress, orderId, productName, size);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "민원 신청하는데 에러가 발생했습니다");
             return "redirect:/complaint/" + orderId;
@@ -123,6 +125,7 @@ public class ComplaintController {
     public String viewComplaintDetail(@PathVariable("complaintId") String complaintId, Model model) {
         // complaintId로 해당 민원 조회
         ComplaintDto complaint = complaintService.getComplaintById(complaintId);
+
 
         // 조회한 민원 데이터를 모델에 추가
         model.addAttribute("complaint", complaint);

@@ -2,6 +2,7 @@ package org.example.shoppingmall.repository.complaint;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.example.shoppingmall.dto.complaint.ComplaintDto;
+import org.example.shoppingmall.dto.order.OrderDetailDto;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serial;
@@ -28,13 +29,13 @@ public interface ComplaintRepository {
     //민원 삭제 메서드
     void deleteComplaint(ComplaintDto complaintDto);
 
-    //상품 이름 조회
-    List<String> findProductNameByOrderId(Long orderId);
+    //상품 이름, size 조회
+    List<OrderDetailDto> findProductNameByOrderId(Long orderId);
 
     //상품 가격 조회
     String findProductTotalPriceByOrderId(Long orderId, String productName);
 
     //철회를 포함하지 않는 상태있는지 확인
-    boolean existsValidStatus(Long orderId, String productName, String status);
+    boolean existsValidStatus(Long orderId, String productName, String size, String status);
 
 }
