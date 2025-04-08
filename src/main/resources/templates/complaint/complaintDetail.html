@@ -58,6 +58,7 @@
         <div class="complaint-header">민원 상세 정보</div>
         <div class="complaint-detail"><strong>주문 번호:</strong> <span th:text="${complaint.orderId}"></span></div>
         <div class="complaint-detail"><strong>상품 이름:</strong> <span th:text="${complaint.productName}"></span></div>
+        <div class="complaint-detail"><strong>상품 사이즈:</strong> <span th:text="${complaint.size}"></span></div>
         <div class="complaint-detail"><strong>민원 번호:</strong> <span th:text="${complaint.complaintId}"></span></div>
         <div class="complaint-detail"><strong>민원 유형:</strong> <span th:text="${complaint.complaintTypeId == 'cancel' ? '취소' : (complaint.complaintTypeId == 'refund' ? '환불' : (complaint.complaintTypeId == 'exchange' ? '교환' : '기타'))}"></span></div>
         <div class="complaint-detail"><strong>민원 상태:</strong> <span th:text="${complaint.status}"></span></div>

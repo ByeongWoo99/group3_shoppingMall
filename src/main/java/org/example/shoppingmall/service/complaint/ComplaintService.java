@@ -1,6 +1,7 @@
 package org.example.shoppingmall.service.complaint;
 
 import org.example.shoppingmall.dto.complaint.ComplaintDto;
+import org.example.shoppingmall.dto.order.OrderDetailDto;
 import org.example.shoppingmall.repository.complaint.ComplaintRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,7 +64,7 @@ public class ComplaintService {
     }
 
     //민원 저장
-    public void saveComplaint(String complaintType, String complaintTitle, String complaintText,String pickupAddress, Long orderId, String productName) {
+    public void saveComplaint(String complaintType, String complaintTitle, String complaintText,String pickupAddress, Long orderId, String productName, String size) {
 
         // 숫자로만 이루어진 complaint_id 생성
         String complaintId = createNumericUUID(complaintType);
@@ -92,6 +93,7 @@ public class ComplaintService {
         complaintDto.setShippingPrice(shippingPrice);
         complaintDto.setOrderId(orderId);
         complaintDto.setProductName(productName);
+        complaintDto.setSize(size);
 
         //취소, 환불인 경우에만 product_total_price = expectedRefundAmount
         if (complaintType.equals("cancel") || complaintType.equals("refund")) {
@@ -154,14 +156,14 @@ public class ComplaintService {
         complaintRepository.deleteComplaint(complaintDto);
     }
 
-    //같은 orderId를 가지고 있는 productName 값들 출력
-    public List<String> findProductNameByOrderId(Long orderId) {
+    //같은 orderId를 가지고 있는 productName, size 값들 출력
+    public List<OrderDetailDto> findProductNameByOrderId(Long orderId) {
        return complaintRepository.findProductNameByOrderId(orderId);
     }
 
     // 상태 값이 "철회"가 아닌 민원이 존재하는지 확인
-    public boolean isComplaintAlreadyExists(Long orderId, String productName) {
-        return complaintRepository.existsValidStatus(orderId, productName, "철회");
+    public boolean isComplaintAlreadyExists(Long orderId, String productName, String size) {
+        return complaintRepository.existsValidStatus(orderId, productName, size, "철회");
     }
 
 

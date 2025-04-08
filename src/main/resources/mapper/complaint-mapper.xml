@@ -29,7 +29,8 @@
                                expected_refund_amount,
                                shipping_price,
                                order_id,
-                               product_name
+                               product_name,
+                               size
         )
         VALUES (
                   #{complaintId},
@@ -42,7 +43,8 @@
                   #{expectedRefundAmount},
                   #{shippingPrice},
                   #{orderId},
-                  #{productName}
+                  #{productName},
+                  #{size}
                          )
     </insert>
 
@@ -77,10 +79,11 @@
         WHERE complaint_id = #{complaintId}
     </update>
 
-    <!-- order_id에 해당하는 상품 이름 조회-->
+    <!-- order_id에 해당하는 상품 이름, size 조회-->
     <select id="findProductNameByOrderId">
         SELECT
-            product_name
+            product_name,
+            size
         FROM order_detail
         WHERE order_id = #{orderId}
     </select>
@@ -101,6 +104,7 @@
         FROM complaint
         WHERE order_id = #{orderId}
           AND product_name = #{productName}
+          AND size = #{size}
           AND status NOT LIKE '%철회%'
     </select>
 
