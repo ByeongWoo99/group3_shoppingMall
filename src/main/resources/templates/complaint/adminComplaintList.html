@@ -76,7 +76,7 @@
                                     <input type="hidden" name="complaintType" th:value="${complaint.complaintTypeId}">
                                     <button type="submit" class="btn btn-success btn-sm">접수</button>
                                 </form>
-                                <a class="btn btn-warning btn-sm" th:href="@{'/admin/complaint/edit/' + ${complaint.complaintId} + '?complaintType=' + ${complaint.complaintTypeId}}"
+                                <a class="btn btn-warning btn-sm" th:href="@{'/admin/complaint/' + ${complaint.complaintId} + '?complaintType=' + ${complaint.complaintTypeId}}"
                                    th:if="${#strings.contains(complaint.status, '접수')}">답변</a>
                                 <form th:if="${complaint.deleteFlag == 1}"
                                       th:action="@{'/admin/complaint/delete/' + ${complaint.complaintId}}" method="post" style="display:inline;" onsubmit="return confirmDelete();">

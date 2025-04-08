@@ -30,6 +30,8 @@
 <header>
 
 </header>
+<!-- 민원 신청하는데 에러 발생 시 메세지 출력 -->
+<input type="hidden" id="errorMessageInput" th:value="${errorMessage}" />
 
 <section class="py-5">
     <!--민원 신청 부분 -->
@@ -167,6 +169,16 @@
 
         // 선택 값 변경 시 실행
         complaintType.addEventListener("change", togglePickupAddress);
+    });
+</script>
+
+<script>
+    //에러 메세지 팝업창으로 띄우기 위해 추가
+    document.addEventListener("DOMContentLoaded", function() {
+        const errorMessage = document.getElementById("errorMessageInput").value;
+        if (errorMessage) {
+            alert(errorMessage);
+        }
     });
 </script>
 

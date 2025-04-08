@@ -84,10 +84,10 @@ public class ComplaintService {
         ComplaintDto complaintDto = new ComplaintDto();
         complaintDto.setComplaintId(complaintId);
         complaintDto.setComplaintTypeId(complaintType);
-        complaintDto.setReason(complaintTitle);     // complaintTitle을 reason에 설정
+        complaintDto.setReason(complaintTitle);     // complaintTitle 을 reason 에 설정
         complaintDto.setPickupAddress(pickupAddress);
         complaintDto.setStatus(status);
-        complaintDto.setDescription(complaintText); // complaintText를 description에 설정
+        complaintDto.setDescription(complaintText); // complaintText 를 description 에 설정
         complaintDto.setRequestDatetime(Timestamp.valueOf(currentDateTime)); // 현재 시간 넣기
         complaintDto.setShippingPrice(shippingPrice);
         complaintDto.setOrderId(orderId);
@@ -112,6 +112,7 @@ public class ComplaintService {
     //민원 수정 메서드
     public void updateComplaint(String complaintId, String complaintTitle, String complaintText, String pickupAddress) {
 
+        //수정가능한 Title, pickupAddress, Text 만 새로 업데이트
         ComplaintDto complaintDto = new ComplaintDto();
         complaintDto.setComplaintId(complaintId);
         complaintDto.setReason(complaintTitle);

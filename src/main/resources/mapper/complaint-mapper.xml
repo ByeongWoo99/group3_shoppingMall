@@ -80,18 +80,19 @@
     <!-- order_id에 해당하는 상품 이름 조회-->
     <select id="findProductNameByOrderId">
         SELECT
-            product_name,
+            product_name
         FROM order_detail
         WHERE order_id = #{orderId}
     </select>
 
-    <!-- order_id에 해당하는 상품 가격 조회 -->
+    <!-- order_id에 해당하는 상품 가격 조회, 가격 같다는 전제하에 하나만 넘겨줌 -->
     <select id="findProductTotalPriceByOrderId">
         SELECT
             product_total_price
         FROM order_detail
         WHERE order_id = #{orderId}
         AND product_name = #{productName}
+        LIMIT 1
     </select>
 
     <!-- 철회를 포함하지 않는 상태 값 조회 -->

@@ -1,6 +1,7 @@
 package org.example.shoppingmall.controller.complaint;
 
 import jakarta.servlet.http.HttpSession;
+import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.example.shoppingmall.dto.complaint.ComplaintDto;
 import org.example.shoppingmall.dto.product.ProductCategoryDto;
 import org.example.shoppingmall.service.complaint.ComplaintService;
@@ -51,6 +52,7 @@ public class ComplaintController {
         //한 주문에서 여러 개 상품
         List<String> productName = complaintService.findProductNameByOrderId(orderId);
 
+
         model.addAttribute("orderId", orderId);
         model.addAttribute("productNames", productName);
         model.addAttribute("editMode", false);
@@ -74,13 +76,17 @@ public class ComplaintController {
         }
 
 
-        // ComplaintService에서 complaint 저장 처리
-        complaintService.saveComplaint(complaintType, complaintTitle, complaintText, pickupAddress, orderId, productName);
-
+        // ComplaintService 에서 complaint 저장 처리, 신청 시 에러 발생하면 메세지 출력
+        try {
+            complaintService.saveComplaint(complaintType, complaintTitle, complaintText, pickupAddress, orderId, productName);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "민원 신청하는데 에러가 발생했습니다");
+            return "redirect:/complaint/" + orderId;
+        }
         return "redirect:/complaint/list";
     }
 
-    //complaint/list에서 수정버튼 누르면 기존에 저장되어 있던 정보가지고 Form화면으로 이동
+    //complaint/list 에서 수정버튼 누르면 기존에 저장되어 있던 정보가지고 Form 화면으로 이동
     @GetMapping("/complaint/edit")
     public String editComplaint(@RequestParam("complaintId") String complaintId,
                                 @RequestParam("orderId") Long orderId,
